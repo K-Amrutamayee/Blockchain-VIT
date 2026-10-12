@@ -1,0 +1,1161 @@
+/* =========================================================
+   VIT-coin Dashboard
+   Polished light blockchain dashboard (CSS-only restyle)
+   Structure, IDs, classes and JavaScript are untouched.
+   ========================================================= */
+
+:root {
+    /* Surfaces */
+    --background: #f3f6fb;
+    --card: #ffffff;
+
+    /* Text */
+    --navy: #0b1b3a;
+    --text: #1e293b;
+    --slate: #475569;
+    --muted: #5b6b82;
+    --placeholder: #7b8aa0;
+
+    /* Borders */
+    --border: #d3dce8;
+    --border-strong: #bcc9da;
+
+    /* Brand colours */
+    --blue: #2563eb;
+    --blue-dark: #1d4ed8;
+    --indigo: #4f46e5;
+    --purple: #7c3aed;
+    --cyan: #0891b2;
+    --green: #16a34a;
+    --green-dark: #15803d;
+
+    /* Fonts */
+    --font-sans: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+        "Liberation Mono", monospace;
+
+    /* Shadows */
+    --shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+        0 8px 24px rgba(15, 23, 42, 0.06);
+    --shadow-hover: 0 2px 4px rgba(15, 23, 42, 0.05),
+        0 12px 28px rgba(15, 23, 42, 0.09);
+
+    /* Per-card identity (overridden in "Card Themes") */
+    --accent-1: #3b82f6;
+    --accent-2: #60a5fa;
+    --tint: #f3f8ff;
+    --icon-1: #2563eb;
+    --icon-2: #5b9bf8;
+    --icon-shadow: rgba(37, 99, 235, 0.30);
+}
+
+
+/* =========================================================
+   Global
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+
+    color: var(--text);
+    background: var(--background);
+
+    -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   Header
+   ========================================================= */
+
+.topbar {
+    position: relative;
+    min-height: 112px;
+    padding: 0 6%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: #ffffff;
+
+    background:
+        radial-gradient(
+            circle at 85% -30%,
+            rgba(96, 165, 250, 0.28),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #0a1226 0%,
+            #0f2757 50%,
+            #1a4a9c 100%
+        );
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 6px 24px rgba(10, 18, 38, 0.22);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    transition: transform 0.25s ease;
+}
+
+.brand:hover {
+    transform: translateY(-1px);
+}
+
+.brand-icon {
+    position: relative;
+
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 18px;
+
+    background: linear-gradient(145deg, #1d4ed8 0%, #3b82f6 55%, #7cb2ff 100%);
+    color: #ffffff;
+
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, 0.40),
+        inset 0 1px 0 rgba(255, 255, 255, 0.30);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+/* Inner ring gives the logo a "token" feel */
+.brand-icon::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    border-radius: 13px;
+
+    pointer-events: none;
+}
+
+.brand:hover .brand-icon {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 24px rgba(37, 99, 235, 0.46),
+        inset 0 1px 0 rgba(255, 255, 255, 0.30);
+}
+
+.brand h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.8px;
+}
+
+.brand span {
+    display: block;
+    margin-top: 6px;
+
+    color: #c9d8ee;
+
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.network-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 18px;
+
+    border: 1px solid rgba(74, 222, 128, 0.35);
+    border-radius: 999px;
+
+    background: rgba(34, 197, 94, 0.10);
+    color: #e6f7ec;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.network-status:hover {
+    background: rgba(34, 197, 94, 0.16);
+    border-color: rgba(74, 222, 128, 0.55);
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+    background: #22c55e;
+
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.18);
+}
+
+
+/* =========================================================
+   Main Dashboard
+   ========================================================= */
+
+.dashboard-container {
+    width: min(1180px, 92%);
+    margin: 0 auto;
+
+    padding: 36px 0 44px;
+}
+
+
+/* =========================================================
+   Welcome
+   ========================================================= */
+
+.welcome-section {
+    min-height: 170px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    margin-bottom: 26px;
+    padding: 32px 38px;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(99, 102, 241, 0.10),
+            transparent 45%
+        ),
+        linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%);
+
+    box-shadow: var(--shadow);
+}
+
+.eyebrow {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color: var(--blue-dark);
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.welcome-section h2 {
+    margin: 0 0 8px;
+
+    color: var(--navy);
+
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.8px;
+}
+
+.welcome-section p {
+    max-width: 650px;
+
+    margin: 0;
+
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.welcome-icon {
+    width: 84px;
+    height: 84px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid #cfe0fb;
+    border-radius: 24px;
+
+    background: linear-gradient(145deg, #e8f1ff, #f3f0ff);
+    color: var(--blue);
+
+    font-size: 40px;
+
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.10);
+
+    transition: box-shadow 0.25s ease;
+}
+
+.welcome-section:hover .welcome-icon {
+    box-shadow: 0 9px 20px rgba(37, 99, 235, 0.16);
+}
+
+
+/* =========================================================
+   Cards
+   ========================================================= */
+
+.dashboard-card {
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 22px;
+    padding: 30px 28px 28px;
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(180deg, var(--tint) 0%, #ffffff 170px),
+        var(--card);
+
+    box-shadow: var(--shadow);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+/* Thin top accent line */
+.dashboard-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+}
+
+.dashboard-card:hover {
+    transform: translateY(-1px);
+
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-hover);
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+.section-heading > div:last-child {
+    flex: 1;
+}
+
+.section-heading h2 {
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: 21px;
+    font-weight: 750;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+}
+
+.section-heading p {
+    margin: 4px 0 0;
+
+    color: var(--muted);
+    font-size: 13.5px;
+}
+
+.heading-with-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+
+/* =========================================================
+   Card Themes (colour identity per section)
+   Mapping is by existing classes:
+   - .wallet-card          -> Create Wallet (blue)
+   - :has(.green-icon)     -> Wallets & Balances (green)
+   - .transaction-card     -> New Transaction (purple)
+   - :has(.orange-icon)    -> Mempool (cyan)
+   - .mining-card          -> Mine Block (green)
+   - .blockchain-card      -> Blockchain (blue / indigo)
+   ========================================================= */
+
+.wallet-card {
+    --accent-1: #3b82f6;
+    --accent-2: #60a5fa;
+    --tint: #f1f7ff;
+    --icon-1: #2563eb;
+    --icon-2: #5b9bf8;
+    --icon-shadow: rgba(37, 99, 235, 0.30);
+}
+
+.dashboard-card:has(.green-icon) {
+    --accent-1: #16a34a;
+    --accent-2: #4ade80;
+    --tint: #f0fbf5;
+    --icon-1: #15935a;
+    --icon-2: #34c58a;
+    --icon-shadow: rgba(22, 163, 74, 0.28);
+}
+
+.transaction-card {
+    --accent-1: #7c3aed;
+    --accent-2: #a78bfa;
+    --tint: #f7f4ff;
+    --icon-1: #7c3aed;
+    --icon-2: #a77bf5;
+    --icon-shadow: rgba(124, 58, 237, 0.28);
+}
+
+.dashboard-card:has(.orange-icon) {
+    --accent-1: #0891b2;
+    --accent-2: #38bdf8;
+    --tint: #effafd;
+    --icon-1: #0891b2;
+    --icon-2: #38bdf8;
+    --icon-shadow: rgba(8, 145, 178, 0.28);
+}
+
+.mining-card {
+    --accent-1: #16a34a;
+    --accent-2: #4ade80;
+    --tint: #eefaf3;
+    --icon-1: #15935a;
+    --icon-2: #34c58a;
+    --icon-shadow: rgba(22, 163, 74, 0.28);
+
+    background:
+        radial-gradient(
+            circle at 96% 20%,
+            rgba(34, 197, 94, 0.10),
+            transparent 32%
+        ),
+        linear-gradient(180deg, var(--tint) 0%, #ffffff 170px),
+        var(--card);
+}
+
+.blockchain-card {
+    --accent-1: #4f46e5;
+    --accent-2: #3b82f6;
+    --tint: #f3f4ff;
+    --icon-1: #4338ca;
+    --icon-2: #5b8def;
+    --icon-shadow: rgba(79, 70, 229, 0.32);
+}
+
+
+/* =========================================================
+   Section Icons
+   Solid gradient tiles with a flat white glyph. The
+   transparent-colour + text-shadow trick turns emoji into
+   single-colour white silhouettes so every icon matches.
+   ========================================================= */
+
+.section-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 16px;
+
+    background: linear-gradient(145deg, var(--icon-1), var(--icon-2));
+
+    color: transparent;
+    text-shadow: 0 0 0 #ffffff;
+    font-size: 25px;
+    line-height: 1;
+
+    box-shadow:
+        0 6px 14px var(--icon-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.dashboard-card:hover .section-icon {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 18px var(--icon-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+/* Colour classes already in the HTML: they inherit the
+   card theme so the icon always matches its section.   */
+.blue-icon,
+.green-icon,
+.purple-icon,
+.orange-icon,
+.cyan-icon,
+.navy-icon {
+    background: linear-gradient(145deg, var(--icon-1), var(--icon-2));
+}
+
+
+/* Create Wallet icon: wallet drawn in pure CSS (matches reference) */
+.section-icon.blue-icon {
+    position: relative;
+    font-size: 0;
+    text-shadow: none;
+
+    background: linear-gradient(145deg, #4a63e8, #5f82f7);
+    box-shadow:
+        0 6px 14px rgba(74, 99, 232, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* White wallet body */
+.section-icon.blue-icon::before {
+    content: "";
+    position: absolute;
+    left: 25%;
+    top: 33%;
+    width: 50%;
+    height: 36%;
+
+    border-radius: 22%;
+    background: #ffffff;
+
+    box-shadow: 0 -3px 0 -1px rgba(255, 255, 255, 0.55);
+}
+
+/* Blue clasp pill with a white dot */
+.section-icon.blue-icon::after {
+    content: "";
+    position: absolute;
+    left: 54%;
+    top: 44%;
+    width: 24%;
+    height: 17%;
+
+    border-radius: 40%;
+
+    background:
+        radial-gradient(circle, #ffffff 0 20%, transparent 24%),
+        #4a63e8;
+}
+
+
+/* =========================================================
+   Forms
+   ========================================================= */
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.form-row input {
+    flex: 1;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 180px;
+    gap: 18px;
+
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    color: #1f2d44;
+
+    font-size: 13px;
+    font-weight: 650;
+}
+
+input {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 15px;
+
+    background: #ffffff;
+    color: var(--navy);
+
+    border: 1.5px solid #c3cfde;
+    border-radius: 10px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+input::placeholder {
+    color: var(--placeholder);
+    opacity: 1;
+}
+
+input:hover {
+    border-color: #9fb2cb;
+}
+
+input:focus {
+    border-color: var(--blue);
+
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+button {
+    height: 46px;
+
+    padding: 0 20px;
+
+    border: 0;
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 650;
+    letter-spacing: 0.1px;
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.primary-button {
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+    color: #ffffff;
+
+    box-shadow:
+        0 6px 14px rgba(37, 99, 235, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.primary-button:hover {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+
+    box-shadow:
+        0 8px 18px rgba(37, 99, 235, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.transaction-button {
+    min-width: 190px;
+
+    background: linear-gradient(135deg, #4338ca, #6366f1);
+
+    box-shadow:
+        0 6px 14px rgba(79, 70, 229, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.transaction-button:hover {
+    background: linear-gradient(135deg, #3730a3, #4f46e5);
+
+    box-shadow:
+        0 8px 18px rgba(79, 70, 229, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.mine-button {
+    background: linear-gradient(135deg, #15803d, #22c55e);
+
+    box-shadow:
+        0 6px 14px rgba(22, 163, 74, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.mine-button:hover {
+    background: linear-gradient(135deg, #166534, #16a34a);
+
+    box-shadow:
+        0 8px 18px rgba(22, 163, 74, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Secondary / Refresh */
+.secondary-button {
+    height: 40px;
+
+    padding: 0 16px;
+
+    background: #eff6ff;
+    color: var(--blue-dark);
+
+    border: 1px solid #b6d0f7;
+
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.07);
+}
+
+.secondary-button:hover {
+    background: #e0ecff;
+    border-color: #8db8f5;
+
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   Tables
+   ========================================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+
+    background: #ffffff;
+}
+
+table {
+    width: 100%;
+    min-width: 650px;
+
+    border-collapse: collapse;
+}
+
+th {
+    padding: 14px 18px;
+
+    background: #e9eff8;
+    color: #2b3b55;
+
+    border-bottom: 1px solid var(--border-strong);
+
+    text-align: left;
+    white-space: nowrap;
+
+    font-size: 12px;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+td {
+    padding: 15px 18px;
+
+    color: var(--slate);
+
+    border-bottom: 1px solid #e3e9f1;
+
+    font-size: 13.5px;
+    vertical-align: middle;
+}
+
+tbody tr {
+    transition: background 0.15s ease;
+}
+
+tbody tr:nth-child(even) {
+    background: #fafcff;
+}
+
+tbody tr:hover {
+    background: #eef5ff;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* First column (names / index / TxID) reads as the row label */
+td:first-child {
+    color: var(--navy);
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   Special Sections: Wallets
+   ========================================================= */
+
+/* Wallet name with avatar */
+.wallet-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wallet-avatar {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+}
+
+.avatar-0 { background: linear-gradient(135deg, #4338ca, #7c6cf0); }
+.avatar-1 { background: linear-gradient(135deg, #1d6fa5, #38a3d8); }
+.avatar-2 { background: linear-gradient(135deg, #0f8a5f, #34c58a); }
+.avatar-3 { background: linear-gradient(135deg, #7c3aed, #b08af7); }
+.avatar-4 { background: linear-gradient(135deg, #0e7490, #38bdf8); }
+
+/* Address + copy button */
+.address-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.address-text {
+    max-width: 300px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: #3b4a63;
+}
+
+.copy-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid transparent;
+    border-radius: 7px;
+
+    background: transparent;
+    color: var(--blue);
+
+    box-shadow: none;
+}
+
+.copy-btn:hover {
+    background: #e0ecff;
+    border-color: #b6d0f7;
+    transform: none;
+}
+
+.copy-btn.copied {
+    background: #e6f8ee;
+    border-color: #a7e3c0;
+    color: #15803d;
+}
+
+/* Balance: green value + small "VIT" pill (display only) */
+#walletTable td:nth-child(3) {
+    color: #166534;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#walletTable td:nth-child(3)::after {
+    content: "VIT";
+
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 9px;
+
+    border: 1px solid #a7e3c0;
+    border-radius: 999px;
+
+    background: #e6f8ee;
+    color: #15803d;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    vertical-align: 1px;
+}
+
+
+/* =========================================================
+   Special Sections: Mempool & Blockchain
+   ========================================================= */
+
+/* Hashes / addresses stay usable without breaking the table */
+#mempoolTable td:nth-child(-n + 3),
+#chainTable td:nth-child(n + 2) {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #3b4a63;
+
+    word-break: break-all;
+}
+
+#mempoolTable td:nth-child(-n + 3) {
+    min-width: 150px;
+}
+
+#chainTable {
+    min-width: 960px;
+}
+
+#chainTable td:nth-child(n + 2) {
+    min-width: 220px;
+}
+
+#chainTable td:first-child {
+    width: 70px;
+    color: var(--indigo);
+}
+
+#chainTable th {
+    background: #e8ecfb;
+}
+
+#mempoolTable th {
+    background: #e3f2f8;
+}
+
+#walletTable th {
+    background: #e6f4ec;
+}
+
+
+/* =========================================================
+   Footer
+   ========================================================= */
+
+.footer {
+    margin-top: 8px;
+    padding: 26px 20px 34px;
+
+    text-align: center;
+
+    border-top: 1px solid var(--border);
+    background: #ffffff;
+
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.footer p {
+    margin: 0 0 3px;
+
+    color: var(--navy);
+    font-weight: 700;
+}
+
+.footer span {
+    font-size: 12.5px;
+}
+
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .topbar {
+        min-height: 92px;
+        padding: 14px 5%;
+    }
+
+    .network-status {
+        display: none;
+    }
+
+    .dashboard-container {
+        width: 94%;
+        padding-top: 24px;
+    }
+
+    .welcome-section {
+        padding: 26px;
+    }
+
+    .welcome-icon {
+        display: none;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-row button,
+    .transaction-button {
+        width: 100%;
+    }
+
+    .heading-with-action {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .heading-with-action .secondary-button {
+        width: 100%;
+    }
+
+    .address-text {
+        max-width: 160px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .topbar {
+        min-height: 80px;
+    }
+
+    .dashboard-card {
+        padding: 24px 18px 20px;
+        border-radius: 15px;
+    }
+
+    .welcome-section {
+        padding: 22px;
+        border-radius: 15px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .section-heading h2 {
+        font-size: 18px;
+    }
+
+    .section-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        font-size: 21px;
+    }
+
+    .brand {
+        gap: 12px;
+    }
+
+    .brand-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        font-size: 24px;
+    }
+
+    .brand-icon::after {
+        inset: 5px;
+        border-radius: 10px;
+    }
+
+    .brand h1 {
+        font-size: 24px;
+    }
+
+    .brand span {
+        font-size: 12px;
+    }
+}
+
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    * {
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
